@@ -16,9 +16,15 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public: 
-	ATank * GetControlledTank() const;
+	ATank* GetControlledTank() const;
 
 private:
+	UPROPERTY(EditAnywhere)
+	float CrossHairXLocation = 0.5f;
+
+	UPROPERTY(EditAnywhere)
+	float CrossHairYLocation = 0.33333f;
+
 	void BeginPlay() override;
 	void Tick(float) override;
 
