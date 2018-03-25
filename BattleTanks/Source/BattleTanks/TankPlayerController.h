@@ -20,4 +20,8 @@ public:
 
 private:
 	void BeginPlay() override;
+	void Tick(float) override;
+
+	void AimTowardsCrosshair();
+	bool GetSightRayHitLocation(FVector&) const;
 };
