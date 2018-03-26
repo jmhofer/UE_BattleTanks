@@ -47,8 +47,16 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 	auto ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewportSizeY * CrossHairYLocation);
 
-	// de-project the screen position to a world direction
-	// linetrace along the direction and check for a hit
+	FVector LookDirection;
+	if (GetLookDirection(ScreenLocation, LookDirection)) {
+		UE_LOG(LogTemp, Warning, TEXT("Deprojected: %s"), *LookDirection.ToString());
+	}
+	// TODO linetrace along the direction and check for a hit
 
 	return true;
+}
+
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const {
+	FVector _WorldLocation, WorldDirection;
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, _WorldLocation, LookDirection);
 }
