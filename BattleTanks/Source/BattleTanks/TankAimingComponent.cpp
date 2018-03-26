@@ -43,8 +43,6 @@ void UTankAimingComponent::AimAt(FVector AimLocation, float LaunchSpeed)
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at location %s"), *GetOwner()->GetName(), *AimLocation.ToCompactString());
-
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
