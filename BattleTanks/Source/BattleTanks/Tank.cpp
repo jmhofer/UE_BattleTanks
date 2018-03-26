@@ -2,6 +2,7 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "GameFramework/Actor.h"
 
 // Sets default values
 ATank::ATank()
@@ -22,7 +23,6 @@ void ATank::BeginPlay()
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void ATank::SetBarrelReference(UTankBarrel* Barrel)
