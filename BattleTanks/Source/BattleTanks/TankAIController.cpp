@@ -13,10 +13,6 @@ void ATankAIController::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("%s: unable to find world"), *GetName())
 	}
 
-	if (!GetControlledTank()) {
-		UE_LOG(LogTemp, Error, TEXT("%s: unable to find controlled tank"), *GetName())
-	}
-
 	if (!GetPlayerTank()) {
 		UE_LOG(LogTemp, Error, TEXT("%s unable to find the player tank!"), *GetName())
 	}
@@ -26,15 +22,18 @@ void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!GetControlledTank() || !GetPlayerTank()) {
+	auto ControlledTank = Cast<ATank>(GetPawn());
+
+	if (!ControlledTank || !GetPlayerTank()) {
 		return;
 	}
 
 	// TODO move towards player
 
-	GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+	ControlledTank->AimAt(GetPlayerTank()->GetActorLocation());
 
-	// TODO fire when ready
+	// TODO fire only when ready
+	ControlledTank->Fire();
 }
 
 ATank* ATankAIController::GetPlayerTank() const
@@ -49,9 +48,4 @@ ATank* ATankAIController::GetPlayerTank() const
 	}
 
 	return PlayerController->GetControlledTank();
-}
-
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
 }

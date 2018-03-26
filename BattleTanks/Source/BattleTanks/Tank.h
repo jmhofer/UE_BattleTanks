@@ -42,10 +42,13 @@ private:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 8000.f;
+	float LaunchSpeed = 5000.f;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBluePrint = nullptr;
+
+	float ReloadTimeSeconds = 3.f;
+	double LastFireTime = 0.;
 
 	UTankBarrel* Barrel = nullptr;
 };
