@@ -35,5 +35,4 @@ private:
 	UTankTurret* Turret = nullptr;
 
 	void MoveBarrelTowards(FVector);
-	void MoveTurretTowards(FVector);
 };
