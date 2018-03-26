@@ -2,6 +2,7 @@
 
 #include "TankAimingComponent.h"
 #include "GameFramework/Actor.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -9,8 +10,6 @@ UTankAimingComponent::UTankAimingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -18,11 +17,7 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
-
 
 void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent *BarrelToSet)
 {
@@ -33,16 +28,31 @@ void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent *BarrelToSet)
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
-void UTankAimingComponent::AimAt(FVector AimLocation)
+void UTankAimingComponent::AimAt(FVector AimLocation, float LaunchSpeed)
 {
 	if (!Barrel) {
 		return;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s"), 
-		*GetOwner()->GetName(), *AimLocation.ToString(), *Barrel->GetComponentLocation().ToString());
+	UE_LOG(LogTemp, Warning, TEXT("%s aiming at location %s"), *GetOwner()->GetName(), *AimLocation.ToCompactString());
+
+	FVector OutLaunchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+
+	if (UGameplayStatics::SuggestProjectileVelocity(this, OutLaunchVelocity, StartLocation, AimLocation, LaunchSpeed,
+			ESuggestProjVelocityTraceOption::DoNotTrace, true)) {
+
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+
+		MoveBarrelTowards(AimDirection);
+	}
+}
+
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	UE_LOG(LogTemp, Warning, TEXT("%s aiming direction %s"), *GetOwner()->GetName(), *AimDirection.ToCompactString());
+
+	auto DeltaRotator = AimDirection.Rotation() - Barrel->GetForwardVector().Rotation();
 }

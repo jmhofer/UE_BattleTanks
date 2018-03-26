@@ -22,7 +22,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void AimAt(FVector AimLocation);
+	void AimAt(FVector AimLocation, float);
 
 protected:
 	// Called when the game starts
@@ -30,4 +30,6 @@ protected:
 
 private:
 	UStaticMeshComponent* Barrel = nullptr;
+
+	void MoveBarrelTowards(FVector);
 };
