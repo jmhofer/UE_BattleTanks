@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+class AProjectile;
 class UTankBarrel;
 class UTankTurret;
 class UTankAimingComponent;
@@ -31,7 +32,7 @@ public:
 	void AimAt(FVector AimLocation);
 
 protected:
-	UTankAimingComponent * TankAimingComponent = nullptr;
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 private:
 	// Sets default values for this pawn's properties
@@ -41,5 +42,10 @@ private:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 4000.f;
+	float LaunchSpeed = 8000.f;
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBluePrint = nullptr;
+
+	UTankBarrel* Barrel = nullptr;
 };
