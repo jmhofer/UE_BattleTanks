@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "TankAimingComponent.h"
 #include "Tank.generated.h"
+
+class UTankBarrel;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -17,7 +19,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UStaticMeshComponent* Barrel);
+	void SetBarrelReference(UTankBarrel* Barrel);
 
 	void AimAt(FVector AimLocation);
 

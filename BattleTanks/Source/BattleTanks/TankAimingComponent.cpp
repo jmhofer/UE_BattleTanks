@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -19,7 +20,7 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent *BarrelToSet)
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 }
@@ -55,4 +56,6 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	UE_LOG(LogTemp, Warning, TEXT("%s aiming direction %s"), *GetOwner()->GetName(), *AimDirection.ToCompactString());
 
 	auto DeltaRotator = AimDirection.Rotation() - Barrel->GetForwardVector().Rotation();
+
+	Barrel->Elevate(5); // TODO remove magic number
 }

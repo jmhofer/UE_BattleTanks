@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank.h"
-
+#include "TankAimingComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -31,7 +31,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::SetBarrelReference(UStaticMeshComponent* Barrel)
+void ATank::SetBarrelReference(UTankBarrel* Barrel)
 {
 	TankAimingComponent->SetBarrelReference(Barrel);
 }
