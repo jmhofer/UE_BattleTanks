@@ -41,13 +41,15 @@ private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float LaunchSpeed = 5000.f;
 
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeSeconds = 3.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBluePrint = nullptr;
 
-	float ReloadTimeSeconds = 3.f;
 	double LastFireTime = 0.;
 
 	UTankBarrel* Barrel = nullptr;
