@@ -1,17 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Engine/World.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto Tank = GetControlledTank();
+	if (!GetWorld()) {
+		UE_LOG(LogTemp, Error, TEXT("%s: unable to find world"), *GetName())
+	}
 
-	if (!Tank) {
-		UE_LOG(LogTemp, Error, TEXT("not possessing any tank!"))
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("possessing tank: %s"), *Tank->GetName())
+	if (!GetControlledTank()) {
+		UE_LOG(LogTemp, Error, TEXT("%s: unable to find controlled tank"), *GetName())
 	}
 }
 
@@ -35,9 +36,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation: %s"), *HitLocation.ToString())
-
-		// TODO aim at this point
+		GetControlledTank()->AimAt(HitLocation);
 	}
 }
 
@@ -49,14 +48,30 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 
 	FVector LookDirection;
 	if (GetLookDirection(ScreenLocation, LookDirection)) {
-		UE_LOG(LogTemp, Warning, TEXT("Deprojected: %s"), *LookDirection.ToString());
+		return GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
-	// TODO linetrace along the direction and check for a hit
 
-	return true;
+	return false;
 }
 
-bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const {
+bool ATankPlayerController::GetLookDirection(FVector2D InScreenLocation, FVector& OutLookDirection) const {
 	FVector _WorldLocation, WorldDirection;
-	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, _WorldLocation, LookDirection);
+	return DeprojectScreenPositionToWorld(InScreenLocation.X, InScreenLocation.Y, _WorldLocation, OutLookDirection);
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector InLookDirection, FVector &OutHitLocation) const
+{
+	if (!GetWorld() || !GetControlledTank()) {
+		return false;
+	}
+
+	auto LineTraceStart = GetControlledTank()->GetPawnViewLocation();
+	auto LineTraceEnd = LineTraceStart + LineTraceRange * InLookDirection;
+
+	FHitResult HitResult;
+	auto QueryParams = FCollisionQueryParams(FName(), false, GetControlledTank());
+	auto HasHit = GetWorld()->LineTraceSingleByChannel(HitResult, LineTraceStart, LineTraceEnd, ECC_Visibility, QueryParams);
+
+	OutHitLocation = HitResult.Location;
+	return HasHit;
 }

@@ -8,25 +8,32 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto Tank = GetControlledTank();
-
 	if (!GetWorld()) {
-		UE_LOG(LogTemp, Error, TEXT("%s has no access to the game world!"), *GetName())
+		UE_LOG(LogTemp, Error, TEXT("%s: unable to find world"), *GetName())
 	}
 
-	if (!Tank) {
-		UE_LOG(LogTemp, Error, TEXT("%s not possessing any tank!"), *GetName())
-	} else {
-		UE_LOG(LogTemp, Warning, TEXT("%s possessing tank: %s"), *GetName(), *Tank->GetName())
+	if (!GetControlledTank()) {
+		UE_LOG(LogTemp, Error, TEXT("%s: unable to find controlled tank"), *GetName())
 	}
 
-	auto PlayerTank = GetPlayerTank();
-	if (!PlayerTank) {
+	if (!GetPlayerTank()) {
 		UE_LOG(LogTemp, Error, TEXT("%s unable to find the player tank!"), *GetName())
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("%s found the player tank: %s"), *GetName(), *PlayerTank->GetName())
+}
+
+void ATankAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	if (!GetControlledTank() || !GetPlayerTank()) {
+		return;
 	}
+
+	// TODO move towards player
+
+	GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+
+	// TODO fire when ready
 }
 
 ATank* ATankAIController::GetPlayerTank() const

@@ -14,8 +14,8 @@ UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
-public: 
+
+public:
 	ATank* GetControlledTank() const;
 
 private:
@@ -25,10 +25,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation = 0.33333f;
 
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 100000.f;
+
 	void BeginPlay() override;
 	void Tick(float) override;
 
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector&) const;
 	bool GetLookDirection(FVector2D, FVector&) const;
+	bool GetLookVectorHitLocation(FVector, FVector&) const;
 };
