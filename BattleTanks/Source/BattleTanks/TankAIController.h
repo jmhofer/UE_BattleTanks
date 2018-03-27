@@ -22,5 +22,5 @@ private:
 	void BeginPlay() override;
 	void Tick(float) override;
 
-	float AcceptanceRadius = 10.f;
+	float AcceptanceRadius = -1.f;
 };
