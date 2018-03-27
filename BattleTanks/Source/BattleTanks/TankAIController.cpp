@@ -4,6 +4,7 @@
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 #include "Tank.h"
+#include "Navigation/PathFollowingComponent.h"
 
 void ATankAIController::BeginPlay()
 {
@@ -28,7 +29,17 @@ void ATankAIController::Tick(float DeltaSeconds)
 		return;
 	}
 
-	MoveToActor(GetPlayerTank(), AcceptanceRadius);
+	EPathFollowingRequestResult::Type Result = MoveToActor(GetPlayerTank());
+
+	if (Result == EPathFollowingRequestResult::Type::Failed) {
+		UE_LOG(LogTemp, Warning, TEXT("Move Result: Failed!"))
+	}
+	else if (Result == EPathFollowingRequestResult::Type::RequestSuccessful) {
+		UE_LOG(LogTemp, Warning, TEXT("Move Result: Success!"))
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Move Result: Already at goal!"))
+	}
 
 	ControlledTank->AimAt(GetPlayerTank()->GetActorLocation());
 
