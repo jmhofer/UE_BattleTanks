@@ -8,6 +8,12 @@ void UTankMovementComponent::InitialiseComponent(UTankTrack* LeftTrack, UTankTra
 	this->RightTrack = RightTrack;
 }
 
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
+{
+	// we're replacing super functionality
+	UE_LOG(LogTemp, Warning, TEXT("RequestDirectMove(%s)"), *MoveVelocity.ToString())
+}
+
 void UTankMovementComponent::IntendMoveForward(float Throw) {
 	if (!LeftTrack || !RightTrack) {
 		return;
