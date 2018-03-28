@@ -53,6 +53,11 @@ private:
 	TSubclassOf<AProjectile> ProjectileBluePrint = nullptr;
 
 	double LastFireTime = 0.;
+	FVector AimDirection;
 
+	void BeginPlay() override;
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+	bool IsBarrelMoving() const;
 	void MoveBarrelTowards(FVector);
 };
