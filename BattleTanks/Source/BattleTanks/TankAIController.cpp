@@ -3,7 +3,6 @@
 #include "TankAIController.h"
 #include "TankPlayerController.h"
 #include "Engine/World.h"
-#include "Tank.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "TankAimingComponent.h"
 
