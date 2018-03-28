@@ -11,7 +11,7 @@ void ATankPlayerController::BeginPlay()
 
 	if (!ensure(GetWorld() && GetControlledTank())) { return; }
 
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 
 	FoundAimingComponent(AimingComponent);
@@ -35,7 +35,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
-		GetControlledTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	}
 }
 

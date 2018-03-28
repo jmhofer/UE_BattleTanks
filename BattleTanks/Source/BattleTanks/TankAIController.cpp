@@ -5,12 +5,16 @@
 #include "Engine/World.h"
 #include "Tank.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "TankAimingComponent.h"
 
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
 	if (!ensure(GetWorld() && GetPlayerTank())) { return; }
+
+	AimingComponent = Cast<ATank>(GetPawn())->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
 }
 
 void ATankAIController::Tick(float DeltaSeconds)
@@ -22,10 +26,8 @@ void ATankAIController::Tick(float DeltaSeconds)
 	if (!ensure(ControlledTank && GetPlayerTank())) { return; }
 
 	MoveToActor(GetPlayerTank(), AcceptanceRadius);
-	ControlledTank->AimAt(GetPlayerTank()->GetActorLocation());
-
-	// TODO fire only when ready
-	ControlledTank->Fire();
+	AimingComponent->AimAt(GetPlayerTank()->GetActorLocation());
+	AimingComponent->Fire();
 }
 
 ATank* ATankAIController::GetPlayerTank() const

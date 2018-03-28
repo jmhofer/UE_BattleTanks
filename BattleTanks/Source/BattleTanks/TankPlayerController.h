@@ -35,6 +35,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange = 100000.f;
 
+	UTankAimingComponent* AimingComponent = nullptr;
+
 	void BeginPlay() override;
 	void Tick(float) override;
 
