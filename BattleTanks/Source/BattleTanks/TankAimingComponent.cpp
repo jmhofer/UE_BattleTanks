@@ -38,7 +38,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 bool UTankAimingComponent::IsBarrelMoving() const
 {
-	if (!ensure(Barrel)) { return true;  }
+	if (!ensure(Barrel)) { return true; }
 
 	return (!AimDirection.Equals(Barrel->GetForwardVector(), 0.01f));
 }
