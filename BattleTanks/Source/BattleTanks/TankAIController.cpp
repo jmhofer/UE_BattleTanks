@@ -29,8 +29,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 		return;
 	}
 
-	EPathFollowingRequestResult::Type Result = MoveToActor(GetPlayerTank());
-
+	EPathFollowingRequestResult::Type Result = MoveToActor(GetPlayerTank(), AcceptanceRadius);
 	if (Result == EPathFollowingRequestResult::Type::Failed) {
 		UE_LOG(LogTemp, Warning, TEXT("Move Result: Failed!"))
 	}
