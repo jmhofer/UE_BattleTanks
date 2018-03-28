@@ -25,7 +25,9 @@ void ATank::Fire()
 {
 	bool IsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
 
-	if (!ensure(IsReloaded && GetWorld())) { return; }
+	if (!ensure(GetWorld())) { return; }
+
+	if (!IsReloaded) { return; }
 
 	/*
 	auto ProjectileLocation = GetAimingComponent()->Barrel->GetSocketLocation(FName("Projectile"));
