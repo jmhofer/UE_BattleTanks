@@ -31,13 +31,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 
 	EPathFollowingRequestResult::Type Result = MoveToActor(GetPlayerTank(), AcceptanceRadius);
 	if (Result == EPathFollowingRequestResult::Type::Failed) {
-		UE_LOG(LogTemp, Warning, TEXT("Move Result: Failed!"))
-	}
-	else if (Result == EPathFollowingRequestResult::Type::RequestSuccessful) {
-		UE_LOG(LogTemp, Warning, TEXT("Move Result: Success!"))
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Move Result: Already at goal!"))
+		UE_LOG(LogTemp, Error, TEXT("Move Result: Failed!"))
 	}
 
 	ControlledTank->AimAt(GetPlayerTank()->GetActorLocation());
