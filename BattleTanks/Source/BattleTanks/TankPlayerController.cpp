@@ -3,18 +3,18 @@
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 #include "Tank.h"
+#include "TankAimingComponent.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!GetWorld()) {
-		UE_LOG(LogTemp, Error, TEXT("%s: unable to find world"), *GetName())
-	}
+	if (!ensure(GetWorld() && GetControlledTank())) { return; }
 
-	if (!GetControlledTank()) {
-		UE_LOG(LogTemp, Error, TEXT("%s: unable to find controlled tank"), *GetName())
-	}
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
+
+	FoundAimingComponent(AimingComponent);
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
@@ -31,9 +31,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank()) {
-		return;
-	}
+	if (!ensure(GetControlledTank())) { return; }
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
@@ -62,9 +60,7 @@ bool ATankPlayerController::GetLookDirection(FVector2D InScreenLocation, FVector
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector InLookDirection, FVector &OutHitLocation) const
 {
-	if (!GetWorld() || !GetControlledTank()) {
-		return false;
-	}
+	if (!ensure(GetWorld() && GetControlledTank())) { return false; }
 
 	auto LineTraceStart = GetControlledTank()->GetPawnViewLocation();
 	auto LineTraceEnd = LineTraceStart + LineTraceRange * InLookDirection;

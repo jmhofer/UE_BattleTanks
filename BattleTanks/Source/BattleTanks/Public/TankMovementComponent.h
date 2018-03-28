@@ -22,15 +22,15 @@ public:
 	void IntendMoveForward(float Throw);
 
 	UFUNCTION(BlueprintCallable, Category = "Input")
-		void IntendTurnRight(float Throw);
+	void IntendTurnRight(float Throw);
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void InitialiseComponent(UTankTrack * LeftTrack, UTankTrack * RightTrack);
 
-	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 
 private:
 	UTankTrack* LeftTrack = nullptr;
 	UTankTrack* RightTrack = nullptr;
 
+	void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
 };

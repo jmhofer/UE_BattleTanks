@@ -14,34 +14,15 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
+void UTankAimingComponent::InitialiseComponent(UTankBarrel* Barrel, UTankTurret* Turret)
 {
-	Super::BeginPlay();
-}
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	Barrel = BarrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
-{
-	Turret = TurretToSet;
-}
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	this->Barrel = Barrel;
+	this->Turret = Turret;
 }
 
 void UTankAimingComponent::AimAt(FVector AimLocation, float LaunchSpeed)
 {
-	if (!Barrel || !Turret) {
-		return;
-	}
+	if (!ensure(Barrel && Turret)) { return; }
 
 	FVector OutLaunchVelocity;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
@@ -57,6 +38,8 @@ void UTankAimingComponent::AimAt(FVector AimLocation, float LaunchSpeed)
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
+	if (!ensure(Barrel && Turret)) { return; }
+
 	auto DeltaRotator = AimDirection.Rotation() - Barrel->GetForwardVector().Rotation();
 	Barrel->Elevate(DeltaRotator.Pitch);
 	Turret->Rotate(DeltaRotator.Yaw);
