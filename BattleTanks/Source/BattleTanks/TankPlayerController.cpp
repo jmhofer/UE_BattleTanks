@@ -54,9 +54,9 @@ bool ATankPlayerController::GetLookDirection(FVector2D InScreenLocation, FVector
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector InLookDirection, FVector &OutHitLocation) const
 {
-	if (!ensure(GetWorld() && GetPawn())) { return false; }
+	if (!ensure(GetWorld() && PlayerCameraManager)) { return false; }
 
-	auto LineTraceStart = GetPawn()->GetPawnViewLocation();
+	auto LineTraceStart = PlayerCameraManager->GetTargetLocation();
 	auto LineTraceEnd = LineTraceStart + LineTraceRange * InLookDirection;
 
 	FHitResult HitResult;
