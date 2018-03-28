@@ -9,9 +9,9 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (!ensure(GetWorld() && GetControlledTank())) { return; }
+	if (!ensure(GetWorld())) { return; }
 
-	AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 
 	FoundAimingComponent(AimingComponent);
@@ -24,14 +24,9 @@ void ATankPlayerController::Tick(float DeltaSeconds)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank())) { return; }
+	if (!ensure(AimingComponent)) { return;  }
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
@@ -60,13 +55,13 @@ bool ATankPlayerController::GetLookDirection(FVector2D InScreenLocation, FVector
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector InLookDirection, FVector &OutHitLocation) const
 {
-	if (!ensure(GetWorld() && GetControlledTank())) { return false; }
+	if (!ensure(GetWorld() && GetPawn())) { return false; }
 
-	auto LineTraceStart = GetControlledTank()->GetPawnViewLocation();
+	auto LineTraceStart = GetPawn()->GetPawnViewLocation();
 	auto LineTraceEnd = LineTraceStart + LineTraceRange * InLookDirection;
 
 	FHitResult HitResult;
-	auto QueryParams = FCollisionQueryParams(FName(), false, GetControlledTank());
+	auto QueryParams = FCollisionQueryParams(FName(), false, GetPawn());
 	auto HasHit = GetWorld()->LineTraceSingleByChannel(HitResult, LineTraceStart, LineTraceEnd, ECC_Visibility, QueryParams);
 
 	OutHitLocation = HitResult.Location;

@@ -21,7 +21,7 @@ private:
 	UTankAimingComponent * AimingComponent = nullptr;
 	float AcceptanceRadius = 10.f;
 
-	ATank* GetPlayerTank() const;
+	APawn* GetPlayerTank() const;
 
 	void BeginPlay() override;
 	void Tick(float) override;

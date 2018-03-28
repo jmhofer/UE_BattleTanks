@@ -13,7 +13,7 @@ void ATankAIController::BeginPlay()
 
 	if (!ensure(GetWorld() && GetPlayerTank())) { return; }
 
-	AimingComponent = Cast<ATank>(GetPawn())->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	if (!ensure(AimingComponent)) { return; }
 }
 
@@ -21,21 +21,19 @@ void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	auto ControlledTank = Cast<ATank>(GetPawn());
-
-	if (!ensure(ControlledTank && GetPlayerTank())) { return; }
+	if (!ensure(AimingComponent && GetPlayerTank())) { return; }
 
 	MoveToActor(GetPlayerTank(), AcceptanceRadius);
 	AimingComponent->AimAt(GetPlayerTank()->GetActorLocation());
 	AimingComponent->Fire();
 }
 
-ATank* ATankAIController::GetPlayerTank() const
+APawn* ATankAIController::GetPlayerTank() const
 {
 	if (!ensure(GetWorld())) { return nullptr; }
 
 	auto PlayerController = Cast<ATankPlayerController>(GetWorld()->GetFirstPlayerController());
 	if (!ensure(PlayerController)) { return nullptr; }
 
-	return PlayerController->GetControlledTank();
+	return PlayerController->GetPawn();
 }
