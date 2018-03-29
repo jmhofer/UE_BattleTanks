@@ -39,8 +39,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	URadialForceComponent* ExplosionForce = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float DestroyDelay = 5.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float DamageAmount = 20.f;
 
 private:
 	UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
