@@ -31,14 +31,16 @@ void ATankAIController::SetPawn(APawn * InPawn)
 
 void ATankAIController::OnDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("AI: DEAD EVENT RECEIVED"))
+	if (!GetPawn()) { return; }
+
+	GetPawn()->DetachFromControllerPendingDestroy();
 }
 
 void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (!ensure(AimingComponent && GetPlayerTank())) { return; }
+	if (!ensure(AimingComponent) || !GetPlayerTank()) { return; }
 
 	MoveToActor(GetPlayerTank(), AcceptanceRadius);
 	AimingComponent->AimAt(GetPlayerTank()->GetActorLocation());

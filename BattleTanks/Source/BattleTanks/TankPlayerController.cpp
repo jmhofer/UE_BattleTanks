@@ -31,7 +31,7 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 
 void ATankPlayerController::OnDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Player: DEAD EVENT RECEIVED"))
+	StartSpectatingOnly();
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
