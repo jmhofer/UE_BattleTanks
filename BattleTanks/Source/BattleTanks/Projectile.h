@@ -32,9 +32,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* LaunchBlast = nullptr;
 
+	UPROPERTY(VisibleAnywhere)
+	UParticleSystemComponent* ImpactBlast = nullptr;
+
 private:
-
-	UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
-
-	virtual void Tick(float DeltaTime) override;
+		UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
 };
