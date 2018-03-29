@@ -31,10 +31,22 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+
+	OnActorHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 void AProjectile::LaunchProjectile(float LaunchSpeed)
 {
 	TankProjectileMovementComponent->SetVelocityInLocalSpace(FVector::ForwardVector * LaunchSpeed);
 	TankProjectileMovementComponent->Activate();
+}
+
+void AProjectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (!ensure(LaunchBlast) || !ensure(ImpactBlast)) { return; }
+
+	UE_LOG(LogTemp, Warning, TEXT("Hit!"))
+
+	LaunchBlast->Deactivate();
+	ImpactBlast->Activate();
 }

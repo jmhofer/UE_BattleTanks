@@ -36,5 +36,8 @@ protected:
 	UParticleSystemComponent* ImpactBlast = nullptr;
 
 private:
-		UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
+	UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
+
+	UFUNCTION()
+	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 };
