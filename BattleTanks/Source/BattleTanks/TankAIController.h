@@ -19,7 +19,9 @@ class BATTLETANKS_API ATankAIController : public AAIController
 
 private:
 	UTankAimingComponent * AimingComponent = nullptr;
-	float AcceptanceRadius = 10.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float AcceptanceRadius = 5000.f;
 
 	APawn* GetPlayerTank() const;
 
