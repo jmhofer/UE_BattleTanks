@@ -26,7 +26,9 @@ float ATank::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AControll
 	auto ClampedDamage = FMath::Clamp(DamagePoints, 0, CurrentHealth);
 	CurrentHealth -= ClampedDamage;
 
-	UE_LOG(LogTemp, Warning, TEXT("Damage applied: %f, damage received: %d, current health: %d"), Damage, ClampedDamage, CurrentHealth)
+	if (CurrentHealth <= 0) {
+		OnDeath.Broadcast();
+	}
 
 	return ClampedDamage;
 }

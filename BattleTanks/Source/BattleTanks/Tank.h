@@ -6,12 +6,16 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
 
 public:
+	FTankDelegate OnDeath;
+
 	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	// current health as a percentage between 0.0 and 1.0

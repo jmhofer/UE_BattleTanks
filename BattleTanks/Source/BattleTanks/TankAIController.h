@@ -23,9 +23,12 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float AcceptanceRadius = 5000.f;
 
+	UFUNCTION()
+	void OnDeath();
+
 	APawn* GetPlayerTank() const;
 
 	void BeginPlay() override;
 	void Tick(float) override;
-
+	void SetPawn(APawn* InPawn) override;
 };

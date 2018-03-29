@@ -30,8 +30,12 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange = 100000.f;
 
+	UFUNCTION()
+	void OnDeath();
+
 	void BeginPlay() override;
 	void Tick(float) override;
+	void SetPawn(APawn* InPawn) override;
 
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector&) const;
