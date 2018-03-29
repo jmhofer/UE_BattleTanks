@@ -19,6 +19,7 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	CurrentAmmo = MaxAmmunition;
 	LastFireTime = FPlatformTime::Seconds();
 }
 
@@ -26,12 +27,13 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeSeconds) {
+	if (CurrentAmmo == 0) {
+		FiringState = EFiringState::OutOfAmmo;
+	} else if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeSeconds) {
 		FiringState = EFiringState::Reloading;
 	} else if (IsBarrelMoving()) {
 		FiringState = EFiringState::Aiming;
-	}
-	else {
+	} else {
 		FiringState = EFiringState::Locked;
 	}
 }
@@ -82,7 +84,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (FiringState == EFiringState::Reloading) { return; }
+	if (FiringState == EFiringState::OutOfAmmo || FiringState == EFiringState::Reloading) { return; }
 
 	if (!ensure(GetWorld() && ProjectileBluePrint)) { return; }
 
@@ -96,4 +98,5 @@ void UTankAimingComponent::Fire()
 	Projectile->LaunchProjectile(LaunchSpeed);
 
 	LastFireTime = FPlatformTime::Seconds();
+	CurrentAmmo--;
 }
