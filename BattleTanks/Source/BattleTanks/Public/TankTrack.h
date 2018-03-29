@@ -26,4 +26,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float TrackMaxDrivingForce = 100000;
 
+	void BeginPlay() override;
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 };
