@@ -9,6 +9,7 @@
 class UTankProjectileMovementComponent;
 class UStaticMeshComponent;
 class UParticleSystemComponent;
+class URadialForceComponent;
 
 UCLASS()
 class BATTLETANKS_API AProjectile : public AActor
@@ -34,6 +35,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* ImpactBlast = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+	URadialForceComponent* ExplosionForce = nullptr;
 
 private:
 	UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
