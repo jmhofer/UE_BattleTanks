@@ -39,9 +39,14 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	URadialForceComponent* ExplosionForce = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	float DestroyDelay = 5.f;
+
 private:
 	UTankProjectileMovementComponent* TankProjectileMovementComponent = nullptr;
 
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
+
+	void OnTimerExpire();
 };
